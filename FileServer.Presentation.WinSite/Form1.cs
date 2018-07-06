@@ -1,20 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using FileServer.Common.Model;
+using FileServer.Infrastructure.Repository.Repositories;
+using FileServer.Infrastructure.Repository;
 
 namespace FileServer.Presentation.WinSite
 {
-	public partial class Form1 : Form
+	public partial class FormaAlumno : Form
 	{
-		public Form1()
+		public FormaAlumno()
 		{
 			InitializeComponent();
+		}
+
+		private void SaveBtn_Click(object sender, EventArgs e)
+		{
+			if (FileManager.IsParseable(IDBox.Text)
+				&& !String.IsNullOrEmpty(NameBox.Text)
+				&& !String.IsNullOrEmpty(LastNameBox.Text)
+				&& !String.IsNullOrEmpty(DNIBox.Text))
+			{
+				Alumno alumno = new Alumno(Int32.Parse(IDBox.Text), NameBox.Text,
+				LastNameBox.Text, DNIBox.Text);
+				AlumnoRepository aRepo = new AlumnoRepository();
+				aRepo.Add(alumno);
+			}else{
+				MessageBox.Show("Campos Vacíos o ID");
+			}
 		}
 	}
 }
